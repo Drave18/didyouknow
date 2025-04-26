@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <div class="logo">
+                    Did you know?
+                </div>
+                <button class="share-fact open-btn">Share a fact</button>
+            </nav>
+        </header>
+        <main>
+            <aside class="categories">
+                <h3>Categories</h3>
+                <button class="categories-button">All</button>
+                <button class="categories-button">Technology</button>
+                <button class="categories-button">Science</button>
+                <button class="categories-button">Finance</button>
+                <button class="categories-button">Society</button>
+                <button class="categories-button">Entertainment</button>
+                <button class="categories-button">Health</button>
+                <button class="categories-button">History</button>
+                <button class="categories-button">News</button>
+            </aside>
+            <section class="facts">
+                <div class="facts-bar">
+                    <h2>Latest facts</h2>
+                    <div class="button-facts">
+                        <button class="button-facts-button">Newest</button>
+                        <button class="button-facts-button">Popular</button>
+                    </div>
+                </div>
+                <div class="facts-item">
+                    <div class="fact-item-bar">
+                        <div class="facts-item-bar-category technology">Technology</div>
+                        <div class="facts-item-bar-source">
+                            <p>Source</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link source-icon">
+                                <path d="M15 3h6v6"></path>
+                                <path d="M10 14 21 3"></path>
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="facts-item-paragraph">
+                        Lorem ipsum dolor sit amet consectetur
+                        adipisicing elit. Vel nostrum corporis inventore
+                        hic soluta maiores facilis magni laborum recusandae
+                        tempore fugiat, magnam sed illum odit, excepturi totam,
+                        um a animi.
+                    </p>
+                    <div class="facts-item-reactions">
+                        <button class="facts-item-reactions-positive">👍</button>
+                        <div class="facts-item-reactions-votes">
+                            20
+                        </div>
+                        <button class="facts-item-negative">👎</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DIALOG -->
+            <dialog id="modal">
+                <form method="dialog" id="factForm">
+                    <div class="header">
+                        <span>Share a Fact</span>
+                        <button type="button" class="close-btn">✖</button>
+                    </div>
+            
+                    <textarea name="fact" placeholder="Share a fact with the world..." maxlength="200" required  class="text-area"></textarea>
+                    <span class="character-counter">200</span>
+                    <div class="row">
+                        <input type="url" name="source" placeholder="Trustworthy source URL" required />
+                        <select name="category" required>
+                            <option disabled selected value="">Choose category</option>
+                            <option>Science</option>
+                            <option>Technology</option>
+                            <option>History</option>
+                            <option>Nature</option>
+                        </select>
+                    </div>
+            
+                    <button type="submit" class="post-btn">Post</button>
+                </form>
+            </dialog>
+
+            <script src="./index.js"></script>
+        </main>
+    </div>
+    <!-- <script src="./index.js"></script> -->
+</body>
+</html>

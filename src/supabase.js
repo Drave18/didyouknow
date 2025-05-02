@@ -1,3 +1,4 @@
+import "./modal.js";
 // Selecting DOM elements
 const postBtn = document.querySelector(".post-btn");
 const items = document.querySelector(".items");
@@ -10,16 +11,13 @@ import { SUPABASE_URL, SUPABASE_API_KEY } from "./config.js";
 items.innerHTML = "";
 loadFacts();
 
-async function loadFacts() { 
-  const res = await fetch(
-    SUPABASE_URL,
-    {
-      headers: {
-        apikey: SUPABASE_API_KEY,
-        authorization: `Bearer ${SUPABASE_API_KEY}`,
-      },
-    }
-  );
+async function loadFacts() {
+  const res = await fetch(SUPABASE_URL, {
+    headers: {
+      apikey: SUPABASE_API_KEY,
+      authorization: `Bearer ${SUPABASE_API_KEY}`,
+    },
+  });
   const data = await res.json();
   console.log(data);
   createFactList(data);
@@ -71,19 +69,16 @@ function createFactList(dataArray) {
 
 //HERE WE USE POST TO INSERT DATA IN THE DATABSE
 async function createFact(factData) {
-  const res = await fetch(
-    SUPABASE_URL,
-    {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_API_KEY,
-        Authorization: `Bearer ${SUPABASE_API_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=representation", // <- To get the inserted data back
-      },
-      body: JSON.stringify(factData),
-    }
-  );
+  const res = await fetch(SUPABASE_URL, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_API_KEY,
+      Authorization: `Bearer ${SUPABASE_API_KEY}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation", // <- To get the inserted data back
+    },
+    body: JSON.stringify(factData),
+  });
 
   const data = await res.json();
   console.log("Inserted:", data);
@@ -101,7 +96,7 @@ document
     const category = formData.get("category");
 
     const newFact = {
-      text: fact, 
+      text: fact,
       source: source,
       category: category.toLowerCase(),
     };
@@ -115,35 +110,35 @@ document
 
 //FILTERING BY CATEGORIES
 //1. Loop through the elements
-//2. If element matches the category then its displayed, 
+//2. If element matches the category then its displayed,
 // if not the display property is set to none.
 
 // Select all category buttons
 const categoryButtons = document.querySelectorAll(".categories-button");
 
 // Add event listener to each button
-categoryButtons.forEach(button => {
+categoryButtons.forEach((button) => {
   button.addEventListener("click", () => {
     // Get the category from the button's class or text content
     const selectedCategory = button.classList[1]; // This gets "technology", "science", etc.
-    
+
     // Get all fact items
     const factItems = document.querySelectorAll(".facts-item");
-    
+
     // Handle the "All" category differently
     if (selectedCategory === "all") {
       // Show all facts
-      factItems.forEach(item => {
+      factItems.forEach((item) => {
         item.style.display = "block";
       });
       return;
     }
-    
+
     // Filter facts by category
-    factItems.forEach(factItem => {
+    factItems.forEach((factItem) => {
       const categoryDiv = factItem.querySelector(".facts-item-bar-category");
       const categoryText = categoryDiv.textContent.trim().toLowerCase();
-      
+
       if (categoryText === selectedCategory) {
         factItem.style.display = "block";
       } else {
@@ -187,7 +182,7 @@ async function sortFacts(type) {
   console.log("Sorted:", data);
 
   items.innerHTML = ""; // Clear current facts
-  createFactList(data); 
+  createFactList(data);
   addVoteEventListeners();
 }
 
@@ -220,19 +215,16 @@ function addVoteEventListeners() {
       }
 
       // Update in Supabase
-      await fetch(
-        `${SUPABASE_URL}?id=eq.${factId}`,
-        {
-          method: "PATCH",
-          headers: {
-            apikey: SUPABASE_API_KEY,
-            Authorization: `Bearer ${SUPABASE_API_KEY}`,
-            "Content-Type": "application/json",
-            Prefer: "return=representation",
-          },
-          body: JSON.stringify({ votes_positive: currentVotes + 1 }),
-        }
-      );
+      await fetch(`${SUPABASE_URL}?id=eq.${factId}`, {
+        method: "PATCH",
+        headers: {
+          apikey: SUPABASE_API_KEY,
+          Authorization: `Bearer ${SUPABASE_API_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({ votes_positive: currentVotes + 1 }),
+      });
       // Update UI
       voteDiv.textContent = currentVotes + 1;
       votedFacts.push(factId);
@@ -257,19 +249,16 @@ function addVoteEventListeners() {
       }
 
       // Update in Supabase
-      await fetch(
-        `${SUPABASE_URL}?id=eq.${factId}`,
-        {
-          method: "PATCH",
-          headers: {
-            apikey: SUPABASE_API_KEY,
-            Authorization: `Bearer ${SUPABASE_API_KEY}`,
-            "Content-Type": "application/json",
-            Prefer: "return=representation",
-          },
-          body: JSON.stringify({ votes_negative: currentVotes + 1 }),
-        }
-      );
+      await fetch(`${SUPABASE_URL}?id=eq.${factId}`, {
+        method: "PATCH",
+        headers: {
+          apikey: SUPABASE_API_KEY,
+          Authorization: `Bearer ${SUPABASE_API_KEY}`,
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({ votes_negative: currentVotes + 1 }),
+      });
       // Update UI
       voteDiv.textContent = currentVotes + 1;
       votedFacts.push(factId);

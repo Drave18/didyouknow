@@ -250,6 +250,7 @@ main{
     min-height: 150px;
     background-color: var(--bg-secondary);
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 .fact-item-bar{
     width: 100%;
@@ -296,12 +297,16 @@ main{
     display: flex;
     align-items: center;
 }
-.facts-item-bar-source p{
+.facts-item-bar-source .source{
     margin-right: 5px;
+    text-decoration: none;
+    color: var(--text-secondary);
 }
 .facts-item-bar-source:hover{
     cursor: pointer;
         color: var(--text-highlight);
+    filter: brightness(130%);
+    
 }
 .facts-item-reactions-votes{
     display: inline-block;
@@ -384,6 +389,10 @@ dialog .header span{
 dialog::backdrop {
     background: rgba(0, 0, 0, 0.6);
 }
+/* DIALOG */
+
+
+
 
 .header {
     font-size: 1.2em;
@@ -464,3 +473,4 @@ cont;
 .character-counter{
     font-size: var(--font-sm);
 }
+

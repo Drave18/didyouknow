@@ -6,9 +6,14 @@ const { SUPABASE_URL, SUPABASE_API_KEY } = config;
 // Select container
 const items = document.querySelector(".items");
 
-// Fetching Facts IIFE
-(async function loadFacts() {
-  try{
+// When DOM is loaded fetch the facts
+window.onload = () => {
+  loadFacts();
+};
+
+// Fetching Facts
+async function loadFacts() {
+  try {
     const res = await fetch(SUPABASE_URL, {
       headers: {
         apikey: SUPABASE_API_KEY,
@@ -16,10 +21,10 @@ const items = document.querySelector(".items");
     });
     const data = await res.json();
     createFactList(data);
-  }catch(error){
+  } catch (error) {
     console.error(`Error fetching facts: ${error}`);
   }
-})();
+}
 
 // CREATE FACT ITEMS
 function createFactList(dataArray) {
@@ -59,15 +64,48 @@ function createFactList(dataArray) {
     </div>
   `;
   items.insertAdjacentHTML("afterbegin", child);
-  const positiveBtn = document.querySelector('.facts-item-reactions-positive');
-  const negativeBtn = document.querySelector('.facts-item-negative');
-  positiveBtn.onclick = () => reactionFn(fact.id);
-  negativeBtn.onclick = () =>  reactionFn(fact.id);
+
+    const positiveBtn = document.querySelector(
+      ".facts-item-reactions-positive"
+    );
+
+    const negativeBtn = document.querySelector(".facts-item-negative");
+    const factId = fact.id;
+    
+    positiveBtn.onclick = () => {
+      const hasVotedPositive = localStorage.getItem(`voted_positive_${factId}`)
+      
+      if( hasVotedPositive) {
+        alert('You have already voted positively on this fact')
+        return;
+      }
+      
+      reactionFn(
+        fact.id,
+        "positive",
+        fact.votes_positive,
+      );
+      localStorage.setItem(`voted_positive_${factId}`, 'true');
+    };
+
+    negativeBtn.onclick = () => {
+      const hasVotedNegative = localStorage.getItem(`voted_negative_${factId}`)
+      
+      if( hasVotedNegative) {
+        alert('You have already voted negatively on this fact')
+        return;
+      }
+
+      reactionFn(
+        fact.id,
+        "negative",
+        fact.votes_negative,
+      );
+
+      localStorage.setItem(`voted_negative_${factId}`, 'true');
+
+    };
   });
-
-
-  // Add voting event listeners after rendering
-  // addVoteEventListeners();
 }
 
 //HERE WE USE POST TO INSERT DATA IN THE DATABSE
@@ -191,40 +229,10 @@ async function sortFacts(type) {
 
 //VOTING FEATURE
 
-function reactionFn(id) {
-  console.log(id);
-  
-}
-
-// Function to add event listeners to all vote buttons
-function addVoteEventListeners() {
-  // Helper to get/set voted facts from localStorage
-  function getVotedFacts() {
-    return JSON.parse(localStorage.getItem("votedFacts") || "[]");
-  }
-
-  function setVotedFacts(arr) {
-    localStorage.setItem("votedFacts", JSON.stringify(arr));
-  }
-
-  // Positive votes
-  document.querySelectorAll(".facts-item-reactions-positive").forEach((btn) => {
-    btn.addEventListener("click", async function () {
-      const factDiv = btn.closest(".facts-item");
-      const factId = factDiv.dataset.id;
-      const voteDiv = factDiv.querySelector(
-        ".facts-item-reactions-votes.positive"
-      );
-      let currentVotes = parseInt(voteDiv.textContent, 10);
-
-      let votedFacts = getVotedFacts();
-      if (votedFacts.includes(factId)) {
-        alert("You have already voted on this fact.");
-        return;
-      }
-
-      // Update in Supabase
-      await fetch(`${SUPABASE_URL}?id=eq.${factId}`, {
+async function reactionFn(id, type, currentVotes) {
+  switch (type) {
+    case "positive":
+      await fetch(`${SUPABASE_URL}?id=eq.${id}`, {
         method: "PATCH",
         headers: {
           apikey: SUPABASE_API_KEY,
@@ -234,31 +242,9 @@ function addVoteEventListeners() {
         },
         body: JSON.stringify({ votes_positive: currentVotes + 1 }),
       });
-      // Update UI
-      voteDiv.textContent = currentVotes + 1;
-      votedFacts.push(factId);
-      setVotedFacts(votedFacts);
-    });
-  });
-
-  // Negative votes
-  document.querySelectorAll(".facts-item-negative").forEach((btn) => {
-    btn.addEventListener("click", async function () {
-      const factDiv = btn.closest(".facts-item");
-      const factId = factDiv.dataset.id;
-      const voteDiv = factDiv.querySelector(
-        ".facts-item-reactions-votes.negative"
-      );
-      let currentVotes = parseInt(voteDiv.textContent, 10);
-
-      let votedFacts = getVotedFacts();
-      if (votedFacts.includes(factId)) {
-        alert("You have already voted on this fact.");
-        return;
-      }
-
-      // Update in Supabase
-      await fetch(`${SUPABASE_URL}?id=eq.${factId}`, {
+      break;
+      case "negative":
+      await fetch(`${SUPABASE_URL}?id=eq.${id}`, {
         method: "PATCH",
         headers: {
           apikey: SUPABASE_API_KEY,
@@ -266,12 +252,12 @@ function addVoteEventListeners() {
           "Content-Type": "application/json",
           Prefer: "return=representation",
         },
-        body: JSON.stringify({ votes_negative: currentVotes + 1 }),
+        body: JSON.stringify({ votes_negative: currentVotes - 1 }),
       });
-      // Update UI
-      voteDiv.textContent = currentVotes + 1;
-      votedFacts.push(factId);
-      setVotedFacts(votedFacts);
-    });
-  });
+      break;
+    default:
+      break;
+  }
+  // Update HTML
+  loadFacts();
 }

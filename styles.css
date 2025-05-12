@@ -245,7 +245,6 @@ main{
     cursor: pointer;
 }
 .facts-item{
-    border: 2px solid none;
     padding: 25px 30px;
     min-height: 150px;
     background-color: var(--bg-secondary);

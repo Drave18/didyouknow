@@ -252,7 +252,7 @@ async function reactionFn(id, type, currentVotes) {
           "Content-Type": "application/json",
           Prefer: "return=representation",
         },
-        body: JSON.stringify({ votes_negative: currentVotes - 1 }),
+        body: JSON.stringify({ votes_negative: currentVotes + 1 }),
       });
       break;
     default:

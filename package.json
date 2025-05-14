@@ -1,14 +1,24 @@
 {
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "pug": "^3.0.3"
   },
   "devDependencies": {
+    "nodemon": "^3.1.10",
     "vite": "^6.3.4"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  }
+    "dev": "nodemon index.js",
+    "preview": "node index.js"
+  },
+  "name": "didyouknow-main",
+  "version": "1.0.0",
+  "main": "index.js",
+  "keywords": [],
+  "author": "David",
+  "license": "ISC",
+  "description": "",
+  "type": "module"
 }

@@ -1,0 +1,53 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="styles/styles.css")
+        title Facts
+    body 
+        .container
+            header 
+                nav 
+                    .logo Did you know?
+                    button.share-fact.open-btn Share A fact 
+            main
+                aside.categories 
+                    h3 Categories
+                    button.categories-button.all All
+                    button.categories-button.technology Technology
+                    button.categories-button.science Science
+                    button.categories-button.finance Finance
+                    button.categories-button.society Society
+                    button.categories-button.entertainment Entertainment
+                    button.categories-button.health Health
+                    button.categories-button.history History
+                    button.categories-button.news News
+                section.facts 
+                    .facts-bar 
+                        h2 Latest Facts 
+                        .button-facts 
+                            button.button-facts-button.newest Newest
+                            button.button-facts-button.popular Popular 
+                    .items
+                dialog#modal 
+                    form(method="dialog", id="factForm")
+                        .header 
+                            span Share a Fact  
+                            button(type="button").close-btn ✖
+                        textarea(name="fact", placeholder="Share a fact with the world...", required).text-area
+                        span.character-counter 200
+                        .row   
+                            input(type="url", name="source", placeholder="trustworthy source URL", required)
+                            select(name="category", required)
+                                option(value="", disabled, selected) Choose a Category  
+                                option(value="science") Science
+                                option(value="technology") Technology
+                                option(value="history") History
+                                option(value="nature") Nature   
+                        button(type="submit").post-btn Post
+    script.
+        const SUPABASE_URL = "#{SUPABASE_URL}";
+        const SUPABASE_API_KEY =  "#{SUPABASE_API_KEY}";
+
+    script(src="/js/funcionalityJS.js", type="module") 

@@ -122,6 +122,12 @@ categoryButtons.forEach((button) => {
     // Get the category from the button's class or text content
     const selectedCategory = button.classList[1]; // This gets "technology", "science", etc.
 
+    // SCROLL TO FACTS SECTION
+    const factsSection = document.querySelector(".facts");
+    if (factsSection) {
+      factsSection.scrollIntoView({ behavior: "smooth" });
+    }
+
     // Get all fact items
     const factItems = document.querySelectorAll(".facts-item");
 

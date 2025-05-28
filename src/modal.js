@@ -14,18 +14,26 @@ closeBtn.addEventListener("click", ()=>{
 const textArea = document.querySelector(".text-area");
 const characterCounter = document.querySelector(".character-counter");
 
-
 const maxLength = parseInt(textArea.getAttribute("maxlength"));
 
-textArea.addEventListener("input", ()=>{
-    let remainingChars = maxLength- textArea.value.length 
-    if (remainingChars <= 50) {
-        characterCounter.style.color = "red";
-    }
-    else if (remainingChars>=50){
-        characterCounter.style.color = "white"
-    }
-    characterCounter.textContent= remainingChars
-})
+textArea.addEventListener("input", () => {
+  // Prevent input beyond max length
+  if (textArea.value.length > maxLength) {
+    textArea.value = textArea.value.substring(0, maxLength);
+  }
+
+  let remainingChars = maxLength - textArea.value.length;
+
+  // Change color if near limit
+  if (remainingChars <= 50) {
+    characterCounter.style.color = "red";
+  } else {
+    characterCounter.style.color = "white";
+  }
+
+  // Update the text content
+  characterCounter.textContent = remainingChars;
+});
+
 
 
